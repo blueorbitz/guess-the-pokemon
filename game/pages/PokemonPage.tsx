@@ -77,7 +77,7 @@ export const PokemonPage = () => {
 
     const image = new Image();
     image.crossOrigin = "anonymous";
-    image.src = `https://pokemon.choong.pw/images/artwork/${parseInt(pokemon.number)}.png`;
+    image.src = `/assets/images/artwork/${parseInt(pokemon.number)}.png`;
 
     image.onload = () => {
       imageRef.current = image;
@@ -299,9 +299,6 @@ export const PokemonPage = () => {
       <div className="score-board">
         <p>Total: {gameState.score.total}</p>
         <p>Correct: {gameState.score.correct}</p>
-        <p>Wrong: {gameState.score.wrong}</p>
-        <p>Skipped: {gameState.score.skipped}</p>
-        <button className="button-danger" onClick={handleQuit}>End</button>
       </div>
 
       <div className="game-area">
@@ -312,7 +309,6 @@ export const PokemonPage = () => {
               {gameState.showHints && renderHints()}
             </>
           )}
-
           {gameState.gameStatus === 'revealed' && (
             <div className="reveal-animation">
               <img
@@ -330,7 +326,10 @@ export const PokemonPage = () => {
                   }
                 </div>
                 <h2>{gameState.currentPokemon?.name}</h2>
-                <button onClick={loadPokemon}>Next Pokemon</button>
+                <div className="button-group">
+                  <button onClick={loadPokemon}>Next</button>
+                  <button className="button-danger" onClick={handleQuit}>End</button>
+                </div>
               </div>
             </div>
           )}
@@ -339,7 +338,7 @@ export const PokemonPage = () => {
 
         {gameState.gameStatus === 'playing' && (
           <div className="game-controls">
-            <div className="timer">Time: {gameState.timer}s</div>
+            <div className="timer">Hints in: {gameState.timer}s</div>
             <div className="game-input-area">
               <div className="game-input-wrapper">
                 <input

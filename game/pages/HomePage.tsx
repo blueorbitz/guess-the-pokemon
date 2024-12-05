@@ -4,7 +4,7 @@ import { cn } from '../utils';
 
 export const HomePage = ({ postId, username }: { postId: string, username: string }) => {
   const setPage = useSetPage();
-  
+
   return (
     <div className="relative flex h-full w-full flex-col items-center justify-center overflow-hidden rounded-lg bg-[#f5f5f5] dark:bg-[#1a1a1a]">
       <div className="pointer-events-none absolute inset-0 z-20 h-full w-full bg-[#f5f5f5] dark:bg-[#1a1a1a] [mask-image:radial-gradient(transparent,white)]" />
