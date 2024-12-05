@@ -2,28 +2,34 @@ import { ComponentProps } from 'react';
 import { useSetPage } from '../hooks/usePage';
 import { cn } from '../utils';
 
-export const HomePage = ({ postId }: { postId: string }) => {
+export const HomePage = ({ postId, username }: { postId: string, username: string }) => {
   const setPage = useSetPage();
-
+  
   return (
-    <div className="relative flex h-full w-full flex-col items-center justify-center overflow-hidden rounded-lg bg-slate-900">
-      <div className="pointer-events-none absolute inset-0 z-20 h-full w-full bg-slate-900 [mask-image:radial-gradient(transparent,white)]" />
+    <div className="relative flex h-full w-full flex-col items-center justify-center overflow-hidden rounded-lg bg-[#f5f5f5] dark:bg-[#1a1a1a]">
+      <div className="pointer-events-none absolute inset-0 z-20 h-full w-full bg-[#f5f5f5] dark:bg-[#1a1a1a] [mask-image:radial-gradient(transparent,white)]" />
 
-      <h1 className={cn('relative z-20 text-xl text-white md:text-4xl')}>Welcome to Devvit</h1>
-      <p className="relative z-20 mb-4 mt-2 text-center text-neutral-300">
-        Let's build something awesome!
+      <h1 className={cn('relative z-20 text-xl text-gray-900 dark:text-white md:text-4xl')}>Who's that Pokemon!</h1>
+      <p className="relative z-20 mb-4 mt-2 text-center text-gray-600 dark:text-neutral-300">
+        Gotta named 'em all!
       </p>
-      <img src="/assets/default-snoovatar.png" alt="default snoovatar picture" />
-      <p className="relative z-20 mb-4 mt-2 text-center text-neutral-300">PostId: {postId}</p>
-      <MagicButton
-        onClick={() => {
-          setPage('pokemon');
-        }}
-      >
-        Show me more
-      </MagicButton>
+      <img
+        src="/assets/pokeball.jpg"
+        alt="default snoovatar picture"
+        className="w-[100px] h-[100px] rounded-full object-cover shadow-[0_0_10px_rgba(0,0,0,0.1)] dark:shadow-[0_0_10px_rgba(255,255,255,0.7)]"
+      />
+      <p className="relative z-20 mb-4 mt-2 text-center text-gray-600 dark:text-neutral-300">User: <strong>{username}</strong></p>
+      <div className="flex justify-between items-center gap-4">
+        <MagicButton onClick={() => setPage('pokemon')}>
+          Let's GO!
+        </MagicButton>
+        <MagicButton onClick={() => { }}>
+          Leaderboard
+        </MagicButton>
+      </div>
     </div>
   );
+
 };
 
 const MagicButton = ({ children, ...props }: ComponentProps<'button'>) => {

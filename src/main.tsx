@@ -64,10 +64,12 @@ Devvit.addCustomPostType({
 
               switch (data.type) {
                 case 'INIT':
+                  const currUser = await context.reddit.getCurrentUser();
                   sendMessageToWebview(context, {
                     type: 'INIT_RESPONSE',
                     payload: {
                       postId: context.postId!,
+                      username:  currUser?.username ?? 'anon',
                     },
                   });
                   break;

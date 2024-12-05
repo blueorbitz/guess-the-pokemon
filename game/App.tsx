@@ -6,10 +6,10 @@ import { useEffect, useState } from 'react';
 import { sendToDevvit } from './utils';
 import { useDevvitListener } from './hooks/useDevvitListener';
 
-const getPage = (page: Page, { postId }: { postId: string }) => {
+const getPage = (page: Page, { postId, username }: { postId: string, username: string }) => {
   switch (page) {
     case 'home':
-      return <HomePage postId={postId} />;
+      return <HomePage postId={postId} username={username} />;
     case 'pokemon':
       return <PokemonPage />;
     default:
@@ -19,6 +19,7 @@ const getPage = (page: Page, { postId }: { postId: string }) => {
 
 export const App = () => {
   const [postId, setPostId] = useState('');
+  const [username, setUsername] = useState('anon');
   const page = usePage();
   const initData = useDevvitListener('INIT_RESPONSE');
   useEffect(() => {
@@ -28,8 +29,9 @@ export const App = () => {
   useEffect(() => {
     if (initData) {
       setPostId(initData.postId);
+      setUsername(initData.username);
     }
   }, [initData, setPostId]);
 
-  return <div className="h-full">{getPage(page, { postId })}</div>;
+  return <div className="h-full">{getPage(page, { postId, username })}</div>;
 };

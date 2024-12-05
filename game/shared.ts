@@ -11,6 +11,7 @@ export type BlocksToWebviewMessage = {
   type: "INIT_RESPONSE";
   payload: {
     postId: string;
+    username: string;
   };
 } | {
   type: "GET_POKEMON_RESPONSE";

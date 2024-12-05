@@ -1,0 +1,437 @@
+:root {
+  /* Light mode colors */
+  --bg-color: #f5f5f5;
+  --bg-color-2: #f9f9f9;
+  --card-bg: #ffffff;
+  --text-color: #333333;
+  --border-color: #dddddd;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+  --button-bg: #4CAF50;
+  --button-danger: #dc2626;
+  --button-hover: #45a049;
+  --button-text: #ffffff;
+  --hint-bg: #f8f8f8;
+  --hint-bg-rgb: 248, 248, 248;
+  /* Light mode */
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Dark mode colors */
+    --bg-color: #1a1a1a;
+    --bg-color-2: #2a2a2a;
+    --card-bg: #2d2d2d;
+    --text-color: #ffffff;
+    --border-color: #404040;
+    --shadow-color: rgba(0, 0, 0, 0.3);
+    --button-bg: #388E3C;
+    --button-hover: #2E7D32;
+    --button-text: #ffffff;
+    --hint-bg: #363636;
+    --hint-bg-rgb: 48, 48, 48;
+    /* Dark mode */
+  }
+}
+
+/* Add these styles to ensure the body takes full viewport height */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 500px;
+  background: var(--bg-color);
+  display: block
+}
+
+.main-container {
+  max-width: 750px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.page-wrapper {
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+h1 {
+  color: #2a75bb;
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.description {
+  font-size: 1.2rem;
+  color: var(--text-color);
+  margin-bottom: 2rem;
+}
+
+.button-group {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  width: 100%;
+}
+
+.button-group button {
+  flex: 1;
+  padding: 10px 20px;
+  max-width: 200px;
+}
+
+button {
+  padding: 0.5rem 2rem;
+  border: none;
+  border-radius: 5px;
+  background: var(--button-bg);
+  color: var(--button-text);
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.button-danger {
+  background: var(--button-danger);
+  color: var(--button-text);
+}
+
+.button-danger:hover {
+  background: #ff3b30;
+}
+
+button:hover {
+  background: var(--button-hover);
+}
+
+input {
+  padding: 0.5rem 1rem;
+  border: 2px solid var(--border-color);
+  border-radius: 5px;
+  font-size: 1em;
+  width: 200px;
+  background: var(--card-bg);
+  color: var(--text-color);
+}
+
+/* Main Page class */
+
+.start-game-section {
+  margin: 2rem 0;
+}
+
+.username-input {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  margin-right: 1rem;
+  border: 2px solid #2a75bb;
+  border-radius: 4px;
+}
+
+.leaderboard-container {
+  margin-top: 3rem;
+}
+
+.leaderboard-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.leaderboard-table th,
+.leaderboard-table td {
+  padding: 0.75rem;
+  border: 1px solid var(--border-color);
+}
+
+.leaderboard-table th {
+  background-color: #2a75bb;
+  color: var(--card-bg);
+}
+
+.leaderboard-table tr:nth-child(even) {
+  background-color: var(--bg-color);
+}
+
+.leaderboard-table tr:hover {
+  background-color: var(--bg-color-2);
+}
+
+.quit-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #666;
+  transition: all 0.2s ease;
+}
+
+.quit-button:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+  color: #333;
+}
+
+.pokemon-game {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  position: fixed;
+  /* This ensures it covers the full viewport */
+  top: 0;
+  left: 0;
+  background: var(--bg-color);
+  color: var(--text-color);
+  overflow-y: auto;
+  /* Allows scrolling if content is too tall */
+  box-sizing: border-box;
+  /* Ensures padding doesn't affect total width */
+}
+
+.game-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  background: var(--card-bg);
+  padding: 2rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 3px 10px var(--shadow-color);
+  max-width: 90%;
+  width: 500px;
+  /* Add fixed width */
+  margin: 1rem auto;
+  /* Center horizontally */
+}
+
+.score-board {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 0.5rem;
+  background: var(--card-bg);
+  padding: 1rem 2rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px var(--shadow-color);
+  width: 500px;
+  /* Match game-area width */
+  max-width: 90%;
+  justify-content: center;
+  /* Center score items */
+}
+
+.score-board p {
+  margin: 0;
+  font-size: 1rem;
+  text-align: center;
+}
+
+.pokemon-display {
+  position: relative;
+  width: 300px;
+  height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  /* Center the display area */
+}
+
+.game-controls {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.game-input-area {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+  max-width: 400px;
+  /* Limit input area width */
+}
+
+.game-input-wrapper {
+  width: 100%;
+}
+
+.game-input-wrapper input {
+  width: 100%;
+  padding: 1rem 1.5rem;
+  border: 2px solid var(--border-color);
+  border-radius: 5px;
+  font-size: 1em;
+  background: var(--card-bg);
+  color: var(--text-color);
+  box-sizing: border-box;
+}
+
+.hints {
+  position: absolute;
+  top: 0;
+  right: -50px;
+  background: rgba(var(--hint-bg-rgb), 0.85);
+  /* Using RGB for transparency */
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  margin: 0;
+  max-width: 200px;
+  text-align: left;
+  z-index: 10;
+  backdrop-filter: blur(4px);
+  /* Adds a frosted glass effect */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 0.9rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.hints p {
+  margin: 5px 0;
+  color: var(--text-color);
+}
+
+.reveal-animation {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  width: 100%;
+  animation: revealPokemon 0.5s ease-out;
+}
+
+.revealed-pokemon {
+  max-width: 300px;
+  max-height: 300px;
+  width: auto;
+  height: auto;
+  animation: bounceIn 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.reveal-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+  width: 100%;
+}
+
+.reveal-content h2 {
+  margin: 0;
+  color: var(--text-color);
+  font-size: 1.5rem;
+  text-transform: capitalize;
+  animation: fadeIn 0.5s ease-out 0.3s both;
+}
+
+.reveal-content button {
+  min-width: 150px;
+  padding: 12px 24px;
+  font-size: 1rem;
+  animation: fadeIn 0.5s ease-out 0.5s both;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .score-board {
+    padding: 1rem 2rem;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+    /* Allow items to wrap on small screens */
+    justify-content: space-around;
+  }
+
+  .score-board p {
+    font-size: 0.9rem;
+    margin: 2px 0;
+    min-width: calc(50% - 20px);
+    /* Two items per row with gap */
+    text-align: center;
+  }
+
+  .game-area {
+    padding: 1rem;
+  }
+
+  .game-input-area {
+    flex-direction: column;
+  }
+
+  input {
+    width: 100%;
+  }
+
+  button {
+    width: 100%;
+  }
+
+  .pokemon-display {
+    width: 250px;
+    /* Smaller display for mobile */
+    height: 250px;
+  }
+
+  .hints {
+    position: static;
+    /* Stack normally on mobile */
+    right: auto;
+    width: 100%;
+    max-width: none;
+    margin: 10px 0;
+    box-sizing: border-box;
+  }
+}
+
+/* Keep your existing animation keyframes */
+@keyframes revealPokemon {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes bounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+
+  50% {
+    opacity: 0.9;
+    transform: scale(1.1);
+  }
+
+  80% {
+    opacity: 1;
+    transform: scale(0.89);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
