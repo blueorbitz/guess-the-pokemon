@@ -27,6 +27,7 @@ interface GameProps {
   guess: string;
   guessResult: null | 'correct' | 'wrong';
   canProceedWithEnter: boolean;
+  gameTimer: number;
 };
 
 export const PokemonPage = () => {
@@ -46,7 +47,9 @@ export const PokemonPage = () => {
     guess: '',
     guessResult: null, // 'correct' or 'wrong'
     canProceedWithEnter: false,
+    gameTimer: 0,
   });
+  const [showQuitModal, setShowQuitModal] = useState(false);
   const canvasRef = useRef<any>(null);
   const imageRef = useRef<any>(null);
   const timerRef = useRef<any>(null);
@@ -213,8 +216,16 @@ export const PokemonPage = () => {
   };
 
   const handleQuit = () => {
-    // Navigate back to the main page
+    setShowQuitModal(true);
+  };
+  
+  const confirmQuit = () => {
+    setShowQuitModal(false);
     setPage('home');
+  };
+  
+  const cancelQuit = () => {
+    setShowQuitModal(false);
   };
 
   const renderHints = () => {
@@ -243,8 +254,26 @@ export const PokemonPage = () => {
     );
   };
 
+  const formatTime = (seconds: number) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+  };
+
   useEffect(() => {
     loadPokemon();
+  }, []);
+
+  useEffect(() => {
+    const gameTimerInterval = setInterval(() => {
+      setGameState(prev => ({
+        ...prev,
+        gameTimer: prev.gameTimer + 1
+      }));
+    }, 1000);
+  
+    // Cleanup interval on component unmount
+    return () => clearInterval(gameTimerInterval);
   }, []);
 
   useEffect(() => {
@@ -286,6 +315,22 @@ export const PokemonPage = () => {
     };
   }, [gameState.gameStatus]); // Only re-run if gameStatus changes
 
+  useEffect(() => {
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setShowQuitModal(false);
+      }
+    };
+  
+    if (showQuitModal) {
+      window.addEventListener('keydown', handleEscape);
+    }
+  
+    return () => {
+      window.removeEventListener('keydown', handleEscape);
+    };
+  }, [showQuitModal]);
+
   return (
     <div className="pokemon-game">
       <button
@@ -297,6 +342,7 @@ export const PokemonPage = () => {
       </button>
 
       <div className="score-board">
+        <p>Time: {formatTime(gameState.gameTimer)}</p>
         <p>Total: {gameState.score.total}</p>
         <p>Correct: {gameState.score.correct}</p>
       </div>
@@ -365,6 +411,29 @@ export const PokemonPage = () => {
         )}
 
       </div>
+
+      {showQuitModal && (
+  <div className="modal-overlay">
+    <div className="modal-content">
+      <h2>End Game</h2>
+      <p>Are you sure you want to quit? Your progress will be end here.</p>
+      <div className="modal-buttons">
+        <button 
+          className="modal-button cancel" 
+          onClick={cancelQuit}
+        >
+          Cancel
+        </button>
+        <button 
+          className="modal-button confirm" 
+          onClick={confirmQuit}
+        >
+          Quit
+        </button>
+      </div>
+    </div>
+  </div>
+)}
 
     </div>
   );
