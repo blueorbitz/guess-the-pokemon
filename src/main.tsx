@@ -6,6 +6,12 @@ import { WEBVIEW_ID } from './constants.js';
 import { Preview } from './components/Preview.js';
 import { getPokemonByName } from './core/pokeapi.js';
 
+const formatTime = (seconds: number) => {
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = seconds % 60;
+  return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+};
+
 Devvit.addSettings([
   // Just here as an example
   {
@@ -61,15 +67,15 @@ Devvit.addCustomPostType({
             onMessage={async (event) => {
               console.log('Received message', event);
               const data = event as unknown as WebviewToBlockMessage;
+              const currUser = await context.reddit.getCurrentUser();
 
               switch (data.type) {
                 case 'INIT':
-                  const currUser = await context.reddit.getCurrentUser();
                   sendMessageToWebview(context, {
                     type: 'INIT_RESPONSE',
                     payload: {
                       postId: context.postId!,
-                      username:  currUser?.username ?? 'anon',
+                      username: currUser?.username ?? 'anon',
                     },
                   });
                   break;
@@ -89,6 +95,39 @@ Devvit.addCustomPostType({
                   });
                   break;
 
+                case 'SAVE_GUESS_SCORE':
+                  const currentScore = await context.redis.zScore('leaderboard', currUser?.username ?? 'anon');
+                  const newScore = data.payload.correct * 100000 + (100000 - data.payload.playTimeInSeconds);
+                  if (newScore > (currentScore ?? 0)) {
+                    await context.redis.zAdd('leaderboard', {
+                      member: currUser?.username ?? 'anon',
+                      score: newScore,
+                    });
+                  }
+                  await context.reddit.submitComment({
+                    id: context.postId!,
+                    text: [
+                      `🎮 Pokémon Silhouette Game Results`,
+                      `👤 Player: ${currUser?.username ?? 'anon'}`,
+                      `⏱️ Time Played: ${formatTime(data.payload.playTimeInSeconds)}`,
+                      // `📊 Statistics:`,
+                      `- Total Pokémon: ${data.payload.total}`,
+                      `- Correct Guesses: ${data.payload.correct}`,
+                      `- Skipped: ${data.payload.skip}`,
+                      `- Accuracy: ${(data.payload.correct / data.payload.total) * 100} %`,
+                    ].join('\n')
+                  });
+                  break;
+
+                case 'GET_LEADERBOARD':
+                  const leaderboard = await context.redis.zRange('leaderboard', 0, 100000000, { by: 'score', reverse: true });
+                  console.log("Caesar's score: " + (await context.redis.zScore('leaderboard', currUser?.username ?? 'anon')));
+                  console.log('Leaderboard', leaderboard);
+                  sendMessageToWebview(context, {
+                    type: 'GET_LEADERBOARD_RESPONSE',
+                    payload: leaderboard.slice(0, 5),
+                  });
+                  break;
                 default:
                   console.error('Unknown message type', data satisfies never);
                   break;

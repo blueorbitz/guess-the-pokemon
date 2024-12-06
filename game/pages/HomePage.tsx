@@ -23,7 +23,7 @@ export const HomePage = ({ postId, username }: { postId: string, username: strin
         <MagicButton onClick={() => setPage('pokemon')}>
           Let's GO!
         </MagicButton>
-        <MagicButton onClick={() => { }}>
+        <MagicButton onClick={() => setPage('leaderboard')}>
           Leaderboard
         </MagicButton>
       </div>

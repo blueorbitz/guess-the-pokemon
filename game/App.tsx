@@ -5,6 +5,7 @@ import { usePage } from './hooks/usePage';
 import { useEffect, useState } from 'react';
 import { sendToDevvit } from './utils';
 import { useDevvitListener } from './hooks/useDevvitListener';
+import { LeaderboardPage } from './pages/LeaderboardPage';
 
 const getPage = (page: Page, { postId, username }: { postId: string, username: string }) => {
   switch (page) {
@@ -12,6 +13,8 @@ const getPage = (page: Page, { postId, username }: { postId: string, username: s
       return <HomePage postId={postId} username={username} />;
     case 'pokemon':
       return <PokemonPage />;
+    case 'leaderboard':
+      return <LeaderboardPage />
     default:
       throw new Error(`Unknown page: ${page satisfies never}`);
   }

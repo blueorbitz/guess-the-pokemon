@@ -3,6 +3,8 @@ import { useSetPage } from '../hooks/usePage';
 import pokemonData from '../pokemon-data.json';
 // @ts-ignore
 import '../App.css';
+import { leaderboardService } from '../services/leaderboard';
+import { formatTime } from '../services/formatter';
 
 interface Pokemon {
   number: string;
@@ -49,7 +51,8 @@ export const PokemonPage = () => {
     canProceedWithEnter: false,
     gameTimer: 0,
   });
-  const [showQuitModal, setShowQuitModal] = useState(false);
+  const [showQuitModal, setShowQuitModal] = useState<boolean>(false);
+  const [postAsComment, setPostAsComment] = useState<boolean>(false);
   const canvasRef = useRef<any>(null);
   const imageRef = useRef<any>(null);
   const timerRef = useRef<any>(null);
@@ -218,12 +221,21 @@ export const PokemonPage = () => {
   const handleQuit = () => {
     setShowQuitModal(true);
   };
-  
+
   const confirmQuit = () => {
+    if (postAsComment) {
+      // Logic to post as comment
+      leaderboardService.addScore({
+        playTimeInSeconds: gameState.gameTimer,
+        correct: gameState.score.correct,
+        total: gameState.score.total,
+        skip: gameState.score.skipped
+      });
+    }
     setShowQuitModal(false);
     setPage('home');
   };
-  
+
   const cancelQuit = () => {
     setShowQuitModal(false);
   };
@@ -254,24 +266,21 @@ export const PokemonPage = () => {
     );
   };
 
-  const formatTime = (seconds: number) => {
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = seconds % 60;
-    return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
-  };
-
   useEffect(() => {
     loadPokemon();
   }, []);
 
   useEffect(() => {
     const gameTimerInterval = setInterval(() => {
+      if (showQuitModal) 
+        return;
+
       setGameState(prev => ({
         ...prev,
         gameTimer: prev.gameTimer + 1
       }));
     }, 1000);
-  
+
     // Cleanup interval on component unmount
     return () => clearInterval(gameTimerInterval);
   }, []);
@@ -321,11 +330,11 @@ export const PokemonPage = () => {
         setShowQuitModal(false);
       }
     };
-  
+
     if (showQuitModal) {
       window.addEventListener('keydown', handleEscape);
     }
-  
+
     return () => {
       window.removeEventListener('keydown', handleEscape);
     };
@@ -413,27 +422,39 @@ export const PokemonPage = () => {
       </div>
 
       {showQuitModal && (
-  <div className="modal-overlay">
-    <div className="modal-content">
-      <h2>End Game</h2>
-      <p>Are you sure you want to quit? Your progress will be end here.</p>
-      <div className="modal-buttons">
-        <button 
-          className="modal-button cancel" 
-          onClick={cancelQuit}
-        >
-          Cancel
-        </button>
-        <button 
-          className="modal-button confirm" 
-          onClick={confirmQuit}
-        >
-          Quit
-        </button>
-      </div>
-    </div>
-  </div>
-)}
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h2>End Game</h2>
+            <p>Are you sure you want to quit? Your progress will be end here.</p>
+
+            <div className="checkbox-container">
+              <label className="checkbox-label">
+                <input
+                  type="checkbox"
+                  checked={postAsComment}
+                  onChange={(e) => setPostAsComment(e.target.checked)}
+                />
+                Post result as comment
+              </label>
+            </div>
+
+            <div className="modal-buttons">
+              <button
+                className="modal-button cancel"
+                onClick={cancelQuit}
+              >
+                Cancel
+              </button>
+              <button
+                className="modal-button confirm"
+                onClick={confirmQuit}
+              >
+                Quit
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
     </div>
   );
