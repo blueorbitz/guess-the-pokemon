@@ -1,42 +1,22 @@
-## Devvit Webview React
+## Who's that Pokemon
 
-A template repository for writing webview apps with Devvit.
+This is a nostalogic page where most of us adores since our childhood. With this apps, you can now compete with your friends to see who is the best poke master.
 
-https://github.com/user-attachments/assets/5bf4d6ec-5ff1-49ce-8c50-f46e7fbac781
+### How to play
 
-### Tech
+Click on the "Let's Go" to start. The timer will start and start guessing the pokemon name.
 
-- [Devvit](https://developers.reddit.com/docs/): Reddit’s Developer Platform that lets you build powerful apps and experiences to enhance the communities you love.
-- [Vite](https://vite.dev/): Advanced build tool for the web
-- [React](https://react.dev/): UI Library for the web
-- [TailwindCSS](https://tailwindcss.com/): Utility first CSS framework
-- [Typescript](https://www.typescriptlang.org/): Strongly typed Javascript superset
-- [Motion](https://motion.dev/): Animation Library
+You can just use keyboard type and hit "enter" to go to the next pokemon. This speed up your game play.
 
-## Getting started
+You're free to stop at any time during the game play by clicking on the "End" button on the pokemon reveal screen.
 
-> Make sure you have Node 22 downloaded on your machine before running!
+Once you ended the game, you can decide whether to share your result as a comment or just simply ignore it.
 
-```sh
-git clone ....
+### Leaderboard
 
-cd ...
+The leaderboard is computed ONLY based on the number of correct pokemon guess, there are a total of 1000 pokemon. If you manage to hit that far, you're a true poke master.
 
-npm install
-```
+In the event where there are more than 1 user have the same amount of correct guess, then the time to complete the number of guess is taken into consideration.
 
-Before continuing, make a subreddit on Reddit.com. This will be where you do your own development. Go to Reddit.com, scroll the left side bar down to communities, and click "Create a community."
+### Enjoy!
 
-Next, go to the `package.json` and update see the `dev:devvit` command. Update the command to have you subreddit name.
-
-Finally go to `devvit.yaml` and name your app. It has to be 0-16 characters. Once you have, click save, and run `npm run upload` from the root of the repository.
-
-Now all you have to do is run `npm run dev` and navigate to the subreddit.
-
-There is one last gotcha! You need to make a new post before you can see it. You can do so by going to your subreddit, clicking the three dots, and tapping "Make my experience post". After you start developing your all please update the menu item copy (found in `src/main.tsx`).
-
-## Commands
-
-- `npm run dev`: Starts a development server where you can develop your application live on Reddit.
-- `npm run upload`: Uploads a new version of your app
-- `npm run vite`: Useful to run just the React app on your machine if you need to style things quickly.

@@ -1,7 +1,6 @@
 import { ComponentProps, useEffect } from 'react';
 import { useSetPage } from '../hooks/usePage';
-import { cn, sendToDevvit } from '../utils';
-import { formatTime } from '../services/formatter';
+import { cn, formatTime, sendToDevvit } from '../utils';
 import { useDevvitListener } from '../hooks/useDevvitListener';
 
 type LeaderboardEntry = {
@@ -15,9 +14,12 @@ export const LeaderboardPage = () => {
 
   // This would be replaced with actual data from your backend
   const mockLeaderboard: LeaderboardEntry[] = [
-    { member: "Player1", score: 599562 },
-    { member: "Player2", score: 299321 },
-    { member: "Player3", score: 199295 },
+    // { member: "Player1", score: 599562 },
+    // { member: "Player2", score: 299321 },
+    // { member: "Player3", score: 199295 },
+    // { member: "Player1", score: 599562 },
+    // { member: "Player2", score: 299321 },
+    // { member: "Player3", score: 199295 },
   ];
 
   useEffect(() => {
@@ -42,8 +44,8 @@ export const LeaderboardPage = () => {
         </MagicButton>
       </div>
 
-      <div className="relative z-20 w-full max-w-md">
-        {[...mockLeaderboard, ...(leaderboard ?? [])].map((entry, rank) => (
+      <div className="relative z-20 w-full max-w-md h-[500px] overflow-y-auto">
+        {(leaderboard ?? []).map((entry, rank) => (
           <div
             key={entry.member}
             className="flex items-center justify-between p-4 mb-2 rounded-lg bg-white dark:bg-gray-800 shadow-sm"
@@ -52,9 +54,11 @@ export const LeaderboardPage = () => {
               <span className="text-2xl font-bold text-gray-700 dark:text-gray-300">
                 #{rank + 1}
               </span>
-              <span className="text-gray-900 dark:text-white">
-                {entry.member}
-              </span>
+              <a href={`https://www.reddit.com/user/${entry.member}`}>
+                <span className="text-gray-900 dark:text-white">
+                  {entry.member}
+                </span>
+              </a>
             </div>
             <span className="font-semibold text-gray-700 dark:text-gray-300">
               {Math.floor(entry.score / 100000)} corrects
@@ -71,7 +75,7 @@ const MagicButton = ({ children, ...props }: ComponentProps<'button'>) => {
   return (
     <button
       className={cn(
-        'relative inline-flex h-12 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50',
+        'relative inline-flex h-12  min-w-[150px] overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50',
         props.className
       )}
       {...props}

@@ -32,7 +32,7 @@ Devvit.configure({
 
 Devvit.addMenuItem({
   // Please update as you work on your idea!
-  label: 'Make my experience post',
+  label: 'Guess the pokemon challenge',
   location: 'subreddit',
   forUserType: 'moderator',
   onPress: async (_event, context) => {
@@ -40,7 +40,7 @@ Devvit.addMenuItem({
     const subreddit = await reddit.getCurrentSubreddit();
     const post = await reddit.submitPost({
       // Title of the post. You'll want to update!
-      title: 'My first experience post',
+      title: 'Guess the Pokemon ' + new Date().toDateString(),
       subredditName: subreddit.name,
       preview: <Preview />,
     });
@@ -51,7 +51,7 @@ Devvit.addMenuItem({
 
 // Add a post type definition
 Devvit.addCustomPostType({
-  name: 'Experience Post',
+  name: 'Pokemon Post',
   height: 'tall',
   render: (context) => {
     const [launched, setLaunched] = useState(false);
@@ -67,10 +67,10 @@ Devvit.addCustomPostType({
             onMessage={async (event) => {
               console.log('Received message', event);
               const data = event as unknown as WebviewToBlockMessage;
-              const currUser = await context.reddit.getCurrentUser();
 
               switch (data.type) {
                 case 'INIT':
+                  const currUser = await context.reddit.getCurrentUser();
                   sendMessageToWebview(context, {
                     type: 'INIT_RESPONSE',
                     payload: {
@@ -96,11 +96,14 @@ Devvit.addCustomPostType({
                   break;
 
                 case 'SAVE_GUESS_SCORE':
-                  const currentScore = await context.redis.zScore('leaderboard', currUser?.username ?? 'anon');
+                  const currUser2 = await context.reddit.getCurrentUser();
+                  if (currUser2 == null)
+                    break;
+                  const currentScore = await context.redis.zScore('leaderboard', currUser2.username);
                   const newScore = data.payload.correct * 100000 + (100000 - data.payload.playTimeInSeconds);
                   if (newScore > (currentScore ?? 0)) {
                     await context.redis.zAdd('leaderboard', {
-                      member: currUser?.username ?? 'anon',
+                      member: currUser2.username,
                       score: newScore,
                     });
                   }
@@ -108,20 +111,23 @@ Devvit.addCustomPostType({
                     id: context.postId!,
                     text: [
                       `🎮 Pokémon Silhouette Game Results`,
-                      `👤 Player: ${currUser?.username ?? 'anon'}`,
+                      `👤 Player: ${currUser2.username}`,
                       `⏱️ Time Played: ${formatTime(data.payload.playTimeInSeconds)}`,
                       // `📊 Statistics:`,
                       `- Total Pokémon: ${data.payload.total}`,
                       `- Correct Guesses: ${data.payload.correct}`,
                       `- Skipped: ${data.payload.skip}`,
-                      `- Accuracy: ${(data.payload.correct / data.payload.total) * 100} %`,
+                      `- Accuracy: ${Math.floor((data.payload.correct / data.payload.total) * 100)} %`,
                     ].join('\n')
                   });
                   break;
 
                 case 'GET_LEADERBOARD':
+                  const currUser3 = await context.reddit.getCurrentUser();
+                  if (currUser3 == null)
+                    break;
                   const leaderboard = await context.redis.zRange('leaderboard', 0, 100000000, { by: 'score', reverse: true });
-                  console.log("Caesar's score: " + (await context.redis.zScore('leaderboard', currUser?.username ?? 'anon')));
+                  console.log("Caesar's score: " + (await context.redis.zScore('leaderboard', currUser3.username)));
                   console.log('Leaderboard', leaderboard);
                   sendMessageToWebview(context, {
                     type: 'GET_LEADERBOARD_RESPONSE',

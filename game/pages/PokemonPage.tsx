@@ -4,7 +4,7 @@ import pokemonData from '../pokemon-data.json';
 // @ts-ignore
 import '../App.css';
 import { leaderboardService } from '../services/leaderboard';
-import { formatTime } from '../services/formatter';
+import { formatTime } from '../utils';
 
 interface Pokemon {
   number: string;
@@ -68,7 +68,7 @@ export const PokemonPage = () => {
       return null;
     }
 
-    const randomIndex = Math.floor(Math.random() * 151); //availablePokemon.length);
+    const randomIndex = Math.floor(Math.random() * availablePokemon.length); // Change to 151 for kanto only
     return availablePokemon[randomIndex];
   };
 
