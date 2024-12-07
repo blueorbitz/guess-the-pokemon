@@ -14,12 +14,11 @@ export const LeaderboardPage = () => {
 
   // This would be replaced with actual data from your backend
   const mockLeaderboard: LeaderboardEntry[] = [
-    // { member: "Player1", score: 599562 },
-    // { member: "Player2", score: 299321 },
-    // { member: "Player3", score: 199295 },
-    // { member: "Player1", score: 599562 },
-    // { member: "Player2", score: 299321 },
-    // { member: "Player3", score: 199295 },
+    { member: "Player1", score: 599562 },
+    { member: "Player2", score: 299321 },
+    { member: "Player3", score: 199795 },
+    { member: "Player4", score: 199562 },
+    { member: "Player5", score: 199321 },
   ];
 
   useEffect(() => {
@@ -45,7 +44,7 @@ export const LeaderboardPage = () => {
       </div>
 
       <div className="relative z-20 w-full max-w-md h-[500px] overflow-y-auto">
-        {(leaderboard ?? []).map((entry, rank) => (
+        {[...mockLeaderboard, ...(leaderboard ?? [])].map((entry, rank) => (
           <div
             key={entry.member}
             className="flex items-center justify-between p-4 mb-2 rounded-lg bg-white dark:bg-gray-800 shadow-sm"

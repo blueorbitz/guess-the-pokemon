@@ -434,7 +434,7 @@ export const PokemonPage = () => {
                   checked={postAsComment}
                   onChange={(e) => setPostAsComment(e.target.checked)}
                 />
-                Post result as comment
+                Post to leaderboard & comment
               </label>
             </div>
 
@@ -449,7 +449,7 @@ export const PokemonPage = () => {
                 className="modal-button confirm"
                 onClick={confirmQuit}
               >
-                Quit
+                Save
               </button>
             </div>
           </div>

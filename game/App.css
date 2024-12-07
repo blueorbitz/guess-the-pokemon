@@ -322,7 +322,7 @@ input {
 }
 
 .modal-button.confirm {
-  background-color: #dc3545;
+  background-color: var(--button-bg);
   color: white;
 }
 

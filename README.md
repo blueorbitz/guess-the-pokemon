@@ -1,6 +1,6 @@
 ## Who's that Pokemon
 
-This is a nostalogic page where most of us adores since our childhood. With this apps, you can now compete with your friends to see who is the best poke master.
+This is a nostalgic page that most of us have adored since our childhood. With this app, you can now compete with your friends to see who is the best poke master.
 
 ### How to play
 
